@@ -1,0 +1,9 @@
+<?php
+
+use illusion\Database;
+use illusion\Security;
+
+class {{model}}{
+
+}
+?>

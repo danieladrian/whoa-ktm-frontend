@@ -1,0 +1,21 @@
+<?php
+use illusion\Seo;
+use illusion\Csrf;
+use illusion\Date;
+use illusion\Lang;
+use illusion\Mail;
+use illusion\Math;
+use illusion\Text;
+use illusion\Captcha;
+use illusion\Cookies;
+use illusion\Session;
+use illusion\Security;
+
+use illusion\Header;
+
+class {{controller}} extends Controller{
+  public function index(){
+
+  }
+}
+?>

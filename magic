@@ -1,0 +1,173 @@
+<?php
+include "core/init.php";
+use illusion\Seo;
+main(); 
+
+function main(){
+    $x=1;
+    echo "Write \"help\" to see all magic command\n";
+    while($x==1){
+        echo "Command : ";
+        $line = fgets(STDIN);
+        $line = strtolower(trim(str_replace(array("\n", "\r"), '', $line)));
+        $arr = explode(" ",$line);
+        switch($arr[0]){
+            case "create":
+                create($line);
+            break;
+            case "start":
+                start($line);
+            break;
+            case "help":
+                help();
+            break;
+            case "exit":
+                $x=2;
+            break;
+            default:
+
+        }
+    echo "\n";
+    }
+}
+
+function create($line){
+   $arr = explode(" ",$line);
+   $limit=3;
+   if(isset($arr[1])){
+        switch($arr[1]){
+          case "controller":
+          $limit=4;
+          break;
+          case "model":
+          $limit=4;
+          break;
+          case "view":
+          $limit=4;
+          break;  
+          default:
+          $limit=3;
+        }
+   }
+   if(count($arr)>=$limit){
+    switch($arr[1]){
+        case "activity":
+          $dir=Seo::title($arr[2]);
+          mkdir(__DIR__."\app\activity\\".$dir);  
+          mkdir(__DIR__."\app\activity\\".$dir."\\controller");
+          mkdir(__DIR__."\app\activity\\".$dir."\\view");
+          mkdir(__DIR__."\app\activity\\".$dir."\\model");
+          echo "Successfuly create \"".$dir."\" activity !!!\n";   
+        break;
+        case "controller":
+        if(count($arr)>=4){
+          $file=str_replace(array("\\", "/"), '\\', $arr[3]);
+          $dir=__DIR__."\app\activity\\".$arr[2]."\controller\\".$file.".php"; 
+          $real_file=basename($dir,".php"); 
+          $template=__DIR__."\core\\template\\controller_template";
+          $activity=__DIR__."\app\activity\\".$arr[2];
+          $parent=dirname($dir);
+          if(!file_exists($activity) and !is_Dir($activity)){
+              echo "\"".$arr[2]."\"activity is not exist !!!\n";
+          }else{
+                if(!file_exists($parent) and !is_Dir($parent)){
+                mkdir($parent);
+                } 
+                $myfile = fopen($template, "r") or die("Unable to open file!");
+                $data = fread($myfile,filesize($template));
+                fclose($myfile);
+                $data=str_replace("{{controller}}",$real_file,$data);
+                $myfile = fopen($dir, "w") or die("Unable to open file!");
+                fwrite($myfile, $data);
+                fclose($myfile);
+                echo "Successfuly create \"".$real_file."\" controller !!!\n"; 
+          }
+          
+        }else{
+            echo "Missing \"create controller\" argument !!!\n";
+        }
+        break;
+        case "model":
+        if(count($arr)>=4){
+          $file=str_replace(array("\\", "/"), '\\', $arr[3]);
+          $dir=__DIR__."\app\activity\\".$arr[2]."\model\\".$file.".php"; 
+          $real_file=basename($dir,".php"); 
+          $template=__DIR__."\core\\template\\model_template";
+          $activity=__DIR__."\app\activity\\".$arr[2];
+          $parent=dirname($dir);
+          if(!file_exists($activity) and !is_Dir($activity)){
+              echo "\"".$arr[2]."\"activity is not exist !!!\n";
+          }else{
+                if(!file_exists($parent) and !is_Dir($parent)){
+                mkdir($parent);
+                } 
+                $myfile = fopen($template, "r") or die("Unable to open file!");
+                $data = fread($myfile,filesize($template));
+                fclose($myfile);
+                $data=str_replace("{{model}}",$real_file,$data);
+                $myfile = fopen($dir, "w") or die("Unable to open file!");
+                fwrite($myfile, $data);
+                fclose($myfile);
+                echo "Successfuly create \"".$real_file."\" model !!!\n"; 
+          }
+          
+        }else{
+            echo "Missing \"create model\" argument !!!\n";
+        }          
+        break;
+        case "view":
+        if(count($arr)>=4){
+          $file=str_replace(array("\\", "/"), '\\', $arr[3]);
+          $dir=__DIR__."\app\activity\\".$arr[2]."\\view\\".$file.".php"; 
+          $real_file=basename($dir,".php"); 
+          $template=__DIR__."\core\\template\\view_template";
+          $activity=__DIR__."\app\activity\\".$arr[2];
+          $parent=dirname($dir);
+          if(!file_exists($activity) and !is_Dir($activity)){
+              echo "\"".$arr[2]."\"activity is not exist !!!\n";
+          }else{
+                if(!file_exists($parent) and !is_Dir($parent)){
+                mkdir($parent);
+                } 
+                $myfile = fopen($template, "r") or die("Unable to open file!");
+                $data = fread($myfile,filesize($template));
+                fclose($myfile);
+                $myfile = fopen($dir, "w") or die("Unable to open file!");
+                fwrite($myfile, $data);
+                fclose($myfile);
+                echo "Successfuly create \"".$real_file."\" view !!!\n"; 
+          }
+          
+        }else{
+            echo "Missing \"create view\" argument !!!\n";
+        }                     
+        break;
+        default:
+        
+    }
+   }else{
+    
+        echo "\t> ";
+        $line2 = fgets(STDIN);
+        $line2 = strtolower(trim(str_replace(array("\n", "\r"), '', $line2)));
+        $line.=" ".$line2;
+        if(!empty($line2)){
+        create($line);
+        }
+   } 
+}
+
+function help(){
+    
+}
+
+function start(){
+    
+}
+
+
+
+
+
+
+?>

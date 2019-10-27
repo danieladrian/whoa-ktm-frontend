@@ -1,0 +1,11 @@
+body{
+    padding:10px;
+}
+
+.wrap{
+    width: 70%;
+}
+
+.center-me {
+  margin: 0 auto;
+}
